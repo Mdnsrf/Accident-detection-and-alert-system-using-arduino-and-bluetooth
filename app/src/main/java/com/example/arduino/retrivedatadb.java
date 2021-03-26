@@ -23,9 +23,15 @@ import java.util.List;
 public class retrivedatadb {
 
     Context context;
-    public retrivedatadb(Context context){
+    public retrivedatadb(Context context,MyCustomInterface otherNameInterface){
         this.context=context;
+        this.otherNameInterface = otherNameInterface;
     }
+
+    private MyCustomInterface otherNameInterface;
+
+
+
 
     public double[] arlat;
     public double[] arlongi;
@@ -114,6 +120,8 @@ public class retrivedatadb {
                     txtView.append("\n Distance "+String.format("%.2f",distance[i])+" KM "+arstring[i]);
 
                 }
+
+                otherNameInterface.sendData(arlat,arlongi,arstring);
 
 
 

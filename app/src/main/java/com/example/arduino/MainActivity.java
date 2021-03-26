@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyCustomInterface {
 
 
     public double[] arlat;
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                retrivedatadb obj=new retrivedatadb(MainActivity.this);
+                retrivedatadb obj=new retrivedatadb(MainActivity.this,MainActivity.this);
                  minperson=obj.retrievedatafromdb(latitude,longitude);
                  tvnearestperson.setText(minperson);
             }
@@ -127,5 +130,19 @@ public class MainActivity extends AppCompatActivity {
 }
 
 
+    @Override
+    public void sendData(double[] latf, double[] lonf, String[] namef) {
+        tvnearestperson.setText(namef[0]);
 
+
+
+        Bundle b = new Bundle();
+        b.putDoubleArray("latf", latf);
+        b.putDoubleArray("longf", lonf);
+        b.putStringArray("namef", namef);
+        Intent i=new Intent(this,MapsActivity.class);
+        i.putExtras(b);
+        startActivity(i);
+
+    }
 }
