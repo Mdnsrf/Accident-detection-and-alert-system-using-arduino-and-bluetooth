@@ -45,10 +45,17 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
 
         try {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
@@ -65,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         tvnearestperson=(TextView)findViewById(R.id.tv_minperson);
         personname=(EditText)findViewById(R.id.editTextTextPersonName);
 
+
+        Intent intentss=getIntent();
+        String emailintent=intentss.getStringExtra("INTENTEXTRA");
+       // personname.setText(emailintent);
+        tvnearestperson.setText(emailintent);
         tvnearestperson.setMovementMethod(new ScrollingMovementMethod());
 
 
@@ -105,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                  tvnearestperson.setText(minperson);
             }
         });
-
-                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
+//
+//                Intent intent=new Intent(MainActivity.this,LogIN.class);
+//                startActivity(intent);
 
 
     }

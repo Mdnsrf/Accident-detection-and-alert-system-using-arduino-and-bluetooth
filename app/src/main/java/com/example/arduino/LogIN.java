@@ -3,6 +3,7 @@ package com.example.arduino;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,57 +16,76 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.core.Tag;
 
-public class LoginActivity extends AppCompatActivity {
+public class LogIN extends AppCompatActivity {
 
-    EditText edemail=(EditText)findViewById(R.id.etEmail);
-    EditText edpassword=(EditText)findViewById(R.id.etPassword);
+    Button login;
+    Button register;
+    EditText email;
+    EditText password;
+
     private FirebaseAuth mAuth;
+
     private static final String TAG = "EmailPassword";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        EditText edemail=(EditText)findViewById(R.id.etEmail);
-        EditText edpassword=(EditText)findViewById(R.id.etPassword);
+        setContentView(R.layout.activity_log_i_n);
 
 
-        Button btnlogin=(Button)findViewById(R.id.btnLogin);
-        Button btnRegister=(Button)findViewById(R.id.btnSignUp);
-
+        login=(Button)findViewById(R.id.bLOGIN);
+        register=(Button)findViewById(R.id.bREGISTER);
+        email=(EditText)findViewById(R.id.etEMAIL);
+        password=(EditText)findViewById(R.id.etPASSWORD);
         mAuth = FirebaseAuth.getInstance();
 
-        btnlogin.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=edemail.getText().toString();
-                String password=edpassword.getText().toString();
-
-                signIn(email,password);
-
+                String em=email.getText().toString();
+                String pas=password.getText().toString();
+               signIn(em,pas);
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String email=edemail.getText().toString();
-                String password=edpassword.getText().toString();
-
-
-                 createAccount(email,password);
-
-
+                String em=email.getText().toString();
+                String pas=password.getText().toString();
+                createAccount(em,pas);
             }
         });
+
+
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            String mdn=currentUser.getEmail();
+            System.out.println(mdn);
+
+            Toast.makeText(LogIN.this, "Already logged in.",
+                    Toast.LENGTH_LONG).show();
+
+
+            Intent intent=new Intent(LogIN.this,MainActivity.class);
+            intent.putExtra("INTENTEXTRA",mdn);
+            startActivity(intent);
+        }
+    }
+
 
 
     private void createAccount(String email, String password) {
@@ -80,11 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             System.out.println(user);
-                           // updateUI(user);
+                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LogIN.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -103,13 +123,14 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                        System.out.println(user);
+                          String mdn=user.getEmail();
+                            System.out.println(mdn);
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // If sign in fails, display a =essage to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LogIN.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                           // updateUI(null);
+                            // updateUI(null);
                         }
                     }
                 });
