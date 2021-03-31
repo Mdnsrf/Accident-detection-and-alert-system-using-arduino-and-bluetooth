@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
             }
         });
 
-
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
 
 
     }
@@ -136,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
 
+
+
         Bundle b = new Bundle();
         b.putDoubleArray("latf", latf);
         b.putDoubleArray("longf", lonf);
@@ -144,5 +147,20 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         i.putExtras(b);
         startActivity(i);
 
+    }
+
+    public int FindSmallest(double[] arr1,String[] arrstr ) {
+        int index = 0;
+        double min = arr1[index];
+
+        for (int i = 1; i < arr1.length; i++) {
+
+            if (arr1[i] < min && arrstr[i]!=personname.getText().toString()) {
+                min = arr1[i];
+                index = i;
+            }
+
+        }
+        return index;
     }
 }

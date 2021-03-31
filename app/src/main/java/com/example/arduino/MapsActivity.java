@@ -1,7 +1,10 @@
 package com.example.arduino;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,8 +30,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-
-
     }
 
     /**
@@ -44,18 +45,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Bundle b =getIntent().getExtras();
-        String[] nameff=b.getStringArray("namef");
-        double[] latff=b.getDoubleArray("latf");
-        double[] lonff=b.getDoubleArray("longf");
+        Bundle b = getIntent().getExtras();
+        String[] nameff = b.getStringArray("namef");
+        double[] latff = b.getDoubleArray("latf");
+        double[] lonff = b.getDoubleArray("longf");
         LatLng sydney[] = new LatLng[25];
-        for (int i = 0; i < latff.length ; i++) {
-             sydney[i] = new LatLng(latff[i], lonff[i]);
+        for (int i = 0; i < latff.length; i++) {
+            sydney[i] = new LatLng(latff[i], lonff[i]);
             mMap.addMarker(new MarkerOptions().position(sydney[i]).title(nameff[i]));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney[i]));
 
 
+
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
 
 //        LatLng sydney = new LatLng(latff[1], lonff[1]);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
