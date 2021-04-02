@@ -74,15 +74,17 @@ public class LogIN extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             String mdn=currentUser.getEmail();
+            String authkey=currentUser.getUid();
             System.out.println(mdn);
 
             Toast.makeText(LogIN.this, "Already logged in.",
                     Toast.LENGTH_LONG).show();
 
 
-            Intent intent=new Intent(LogIN.this,MainActivity.class);
-            intent.putExtra("INTENTEXTRA",mdn);
-            startActivity(intent);
+//            Intent intent=new Intent(LogIN.this,MainActivity.class);
+//            intent.putExtra("INTENTEXTRA",mdn);
+//            intent.putExtra("KEYEXTRA",authkey);
+//            startActivity(intent);
         }
     }
 
@@ -123,10 +125,21 @@ public class LogIN extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                          String mdn=user.getEmail();
+
+                            String mdn=user.getEmail();
+                            String authkey=user.getUid();
+
+
                             System.out.println(mdn);
-                        } else {
-                            // If sign in fails, display a =essage to the user.
+
+                            Intent intent=new Intent(LogIN.this,MainActivity.class);
+                            intent.putExtra("INTENTEXTRA",mdn);
+                            intent.putExtra("KEYEXTRA",authkey);
+                            startActivity(intent);
+
+                        }
+                        else {
+                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LogIN.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();

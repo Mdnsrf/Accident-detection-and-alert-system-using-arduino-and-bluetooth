@@ -36,6 +36,7 @@ public class retrivedatadb {
     public double[] arlat;
     public double[] arlongi;
     public String[] arstring;
+    public String[] arkey;
     public double[] distance;
     public double minimum = 0.0;
     public int minimumindex = 0;
@@ -46,6 +47,7 @@ public class retrivedatadb {
     List<String> lstname = new ArrayList<String>();
     List<String> lstlat = new ArrayList<String>();
     List<String> lstlongi = new ArrayList<String>();
+    List<String> lstkeym = new ArrayList<String>();
 
     String returnstring = " ";
 
@@ -54,8 +56,9 @@ public class retrivedatadb {
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference cities = databaseRef.child("USERS");
-        Query citiesQuery = cities.orderByKey();
-
+      // Query citiesQuery = cities.orderByKey();
+//        Query citiesQuery = cities.orderByChild("accident").equalTo("yes");
+       Query citiesQuery = cities.orderByChild("keym");
 
         citiesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,6 +68,7 @@ public class retrivedatadb {
                     lstlat.add(postSnapshot.child("Lat").getValue().toString());
                     lstname.add(postSnapshot.child("Name").getValue().toString());
                     lstlongi.add(postSnapshot.child("Long").getValue().toString());
+                    lstkeym.add(postSnapshot.child("keym").getValue().toString());
 
 
                     //  Log.d("firebasesuccess", String.valueOf(postSnapshot.child("Name").getValue().toString()));
@@ -83,19 +87,20 @@ public class retrivedatadb {
                 arlat = new double[lstlat.size()];
                 arlongi = new double[lstlongi.size()];
                 arstring = new String[lstname.size()];
+                arkey = new String[lstkeym.size()];
                 distance = new double[lstlat.size()];
 
                 for (int i = 0; i < lstlat.size(); ++i) {
                     arlat[i] = Double.parseDouble(lstlat.get(i));
                     arlongi[i] = Double.parseDouble(lstlongi.get(i));
                     arstring[i] = lstname.get(i);
-
+                    arkey[i]=lstkeym.get(i);
 
                     distance[i] = distance(latitudecld, longitudecld, arlat[i], arlongi[i], 'K');
-                    // returnstring = returnstring.concat(arstring[i]);
+
                 }
 
-                System.out.println("latitude :" + arlat.length + " long:" + arlongi.length + " string:" + arstring.length + " distance:" + distance.length);
+                System.out.println("latitude :" + arlat.length + " long:" + arlongi.length + " string:" + arstring.length + " distance:" + distance.length+" key:"+arkey.length);
 
 
                 for (double di : distance) {
@@ -106,7 +111,7 @@ public class retrivedatadb {
                 if (distance.length != 0) {
                     minimumindex = FindSmallest(distance);//finding minimum index
                     System.out.println("minimum index=====" + minimumindex);
-                    System.out.println("minimum person name=====" + arstring[minimumindex]);
+                    System.out.println("=====minimum person name=====" + arstring[minimumindex]);
                     returnstring = returnstring.concat(arstring[minimumindex]);
                 } else {
                     System.out.println("null distance array");
@@ -116,12 +121,12 @@ public class retrivedatadb {
                 TextView txtView = (TextView) ((Activity)context).findViewById(R.id.tv_minperson);
                 txtView.setText(returnstring);
 
-                for (int i = 0; i < arlat.length; i++) {
-                    txtView.append("\n Distance "+String.format("%.2f",distance[i])+" KM "+arstring[i]);
+//                for (int i = 0; i < arlat.length; i++) {
+//                    txtView.append("\n Distance "+String.format("%.2f",distance[i])+" KM "+arstring[i]);
+//
+//                }
 
-                }
-
-                otherNameInterface.sendData(arlat,arlongi,arstring);
+                otherNameInterface.sendData(arlat,arlongi,arstring,arkey,distance);
 
 
 
@@ -138,6 +143,136 @@ public class retrivedatadb {
 
         return returnstring;
     }//end retrieve data from db()
+
+
+
+
+    String getlocationalertmethod (double latitudecld, double longitudecld){
+
+
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference cities = databaseRef.child("USERS");
+       // Query citiesQuery = cities.orderByKey();
+       Query citiesQuery = cities.orderByChild("accident").equalTo("yes");
+
+
+        citiesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    lstlat.add(postSnapshot.child("Lat").getValue().toString());
+                    lstname.add(postSnapshot.child("Name").getValue().toString());
+                    lstlongi.add(postSnapshot.child("Long").getValue().toString());
+                    //  Log.d("firebasesuccess", String.valueOf(postSnapshot.child("Name").getValue().toString()));
+
+                }
+                databaseRef.removeEventListener(this);
+
+            }//end onDataChange()
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+
+
+
+        });//end SingleValueEvent listener
+
+
+
+        return " ";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public int FindSmallest(double[] arr1) {
+        int index = 0;
+        double min = arr1[index];
+
+        for (int i = 1; i < arr1.length; i++) {
+
+            if (arr1[i] < min) {
+                min = arr1[i];
+                index = i;
+            }
+
+        }
+        return index;
+    }
+
+
+    public double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        if (unit == 'K') {
+            dist = dist * 1.609344;
+        } else if (unit == 'N') {
+            dist = dist * 0.8684;
+        }
+        return (dist);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts decimal degrees to radians             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts radians to decimal degrees             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+
+}
+
+
+
+
+        /*
+                for (int i=0;i<3;i++)
+                {
+                    distance[i]=distance(latitude,longitude,arlat[i], arlongi[i], 'K');
+                }
+
+                minimum=distance[0];
+                for(int x=0;x<arlat.length;x++)
+                {
+                    if(distance[x]<minimum)
+                    {
+                        minimum=distance[x];
+                        minimumindex=x;
+                    }
+                }   */
+
+//tv2.setText(String.valueOf(arstring[minimumindex]));
+
+
+
+
+
+
 
 
 //        databaseRef.orderByKey().get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -216,72 +351,3 @@ public class retrivedatadb {
 //        else
 //            return "could not retrive data"+returnstring;
 //    }
-
-
-    public int FindSmallest(double[] arr1) {
-        int index = 0;
-        double min = arr1[index];
-
-        for (int i = 1; i < arr1.length; i++) {
-
-            if (arr1[i] < min) {
-                min = arr1[i];
-                index = i;
-            }
-
-        }
-        return index;
-    }
-
-
-    public double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        if (unit == 'K') {
-            dist = dist * 1.609344;
-        } else if (unit == 'N') {
-            dist = dist * 0.8684;
-        }
-        return (dist);
-    }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts decimal degrees to radians             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts radians to decimal degrees             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
-
-
-}
-
-
-
-
-        /*
-                for (int i=0;i<3;i++)
-                {
-                    distance[i]=distance(latitude,longitude,arlat[i], arlongi[i], 'K');
-                }
-
-                minimum=distance[0];
-                for(int x=0;x<arlat.length;x++)
-                {
-                    if(distance[x]<minimum)
-                    {
-                        minimum=distance[x];
-                        minimumindex=x;
-                    }
-                }   */
-
-//tv2.setText(String.valueOf(arstring[minimumindex]));

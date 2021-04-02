@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
     public Button btn_1;
     public Button btn_2;
     public Button btn_3;
-
+    public Button accidenttriggerbtn;
+    String keyintent;
 
 
 
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
         Intent intentss=getIntent();
         String emailintent=intentss.getStringExtra("INTENTEXTRA");
+         keyintent=intentss.getStringExtra("KEYEXTRA");
+
+
        // personname.setText(emailintent);
         tvnearestperson.setText(emailintent);
         tvnearestperson.setMovementMethod(new ScrollingMovementMethod());
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         btn_1=(Button)findViewById(R.id.btn_1);
         btn_2=(Button)findViewById(R.id.btn_2);
         btn_3=(Button)findViewById(R.id.btn_3);
+        accidenttriggerbtn=(Button)findViewById(R.id.bTEMPACCIDENT);
 
         try {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
@@ -92,6 +97,16 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         } catch (Exception e){
             e.printStackTrace();
         }
+
+
+
+
+        accidenttriggerbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
        btn_1.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                 Insert a = new Insert();
 
                String namepara= personname.getText().toString();
-                a.insert2database(latitude,longitude,namepara);//method of Insert class
+                a.insert2database(keyintent,latitude,longitude,emailintent,keyintent,"no");//method of Insert class
             }
         });
         btn_3.setOnClickListener(new View.OnClickListener() {
@@ -144,20 +159,30 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
     @Override
-    public void sendData(double[] latf, double[] lonf, String[] namef) {
-        tvnearestperson.setText(namef[0]);
+    public void sendData(double[] latf, double[] lonf, String[] namef,String keynf[],double distancef[]) {
+
+        if(namef.length>0){
+
+            tvnearestperson.setText(namef[0]);
+
+            int minindex=FindSmallest(distancef,keynf);
+
+            //tvnearestperson.setText(minindex);
+            String minindexstring=String.valueOf(minindex);
+            tvnearestperson.append(minindexstring);
+        }
 
 
 
 
 
-        Bundle b = new Bundle();
-        b.putDoubleArray("latf", latf);
-        b.putDoubleArray("longf", lonf);
-        b.putStringArray("namef", namef);
-        Intent i=new Intent(this,MapsActivity.class);
-        i.putExtras(b);
-        startActivity(i);
+//        Bundle b = new Bundle();
+//        b.putDoubleArray("latf", latf);
+//        b.putDoubleArray("longf", lonf);
+//        b.putStringArray("namef", namef);
+//        Intent i=new Intent(this,MapsActivity.class);
+//        i.putExtras(b);
+//        startActivity(i);
 
     }
 
@@ -167,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
         for (int i = 1; i < arr1.length; i++) {
 
-            if (arr1[i] < min && arrstr[i]!=personname.getText().toString()) {
+            if (arr1[i] < min && !arrstr[i].equals(keyintent)) {
                 min = arr1[i];
                 index = i;
             }
