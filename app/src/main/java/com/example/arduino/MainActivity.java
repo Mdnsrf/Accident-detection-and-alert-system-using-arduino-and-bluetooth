@@ -1,5 +1,6 @@
 package com.example.arduino;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,10 +16,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyCustomInterface {
 
@@ -29,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
     public String minperson;
     public  double[] distance;
     public  double minimum=0.0;
-  //  public int minimumindex=0;
+    public int minimumindex=0;
 
     public double latitude;
     public double longitude;
@@ -44,6 +51,20 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
     public Button btn_3;
     public Button accidenttriggerbtn;
     String keyintent;
+
+
+//    //for get alert
+//    public double[] arlatz;
+//    public double[] arlongiz;
+//    public String[] arstringz;
+//    public String[] arkeyz;
+//
+//    List<String> lstnamez = new ArrayList<String>();
+//    List<String> lstlatz = new ArrayList<String>();
+//    List<String> lstlongiz = new ArrayList<String>();
+//    List<String> lstkeymz = new ArrayList<String>();
+//
+//    //end for getalert
 
 
 
@@ -101,43 +122,146 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
 
-        accidenttriggerbtn.setOnClickListener(new View.OnClickListener() {
+        accidenttriggerbtn.setOnClickListener(new View.OnClickListener() {//BUTTON FOR ACCIDENT TRIGGER
             @Override
             public void onClick(View v) {
+
+
+                retrivedatadb obj=new retrivedatadb(MainActivity.this,MainActivity.this);
+                minperson=obj.retrievedatafromdb(latitude,longitude);
+               // tvnearestperson.setText(minperson);
+
 
             }
         });
 
 
-       btn_1.setOnClickListener(new View.OnClickListener() {
+        btn_1.setOnClickListener(new View.OnClickListener() {//BUTTON FOR GET LOCATION
            @Override
            public void onClick(View v) {
                getLocations();
            }
        });
-        btn_2.setOnClickListener(new View.OnClickListener() {
+
+        btn_2.setOnClickListener(new View.OnClickListener() {//BUTTON FOR INSERT
             @Override
             public void onClick(View v) {
-                Insert a = new Insert();
+                Insert b = new Insert();
 
                String namepara= personname.getText().toString();
-                a.insert2database(keyintent,latitude,longitude,emailintent,keyintent,"no");//method of Insert class
+                b.insert2database(keyintent,latitude,longitude,emailintent,keyintent,"no");//method of Insert class
             }
         });
-        btn_3.setOnClickListener(new View.OnClickListener() {
+
+        btn_3.setOnClickListener(new View.OnClickListener() {//BUTTON FOR RETRIVE
             @Override
             public void onClick(View v) {
                 retrivedatadb obj=new retrivedatadb(MainActivity.this,MainActivity.this);
                  minperson=obj.retrievedatafromdb(latitude,longitude);
-                 tvnearestperson.setText(minperson);
+                // tvnearestperson.setText(minperson);
             }
         });
-//
-//                Intent intent=new Intent(MainActivity.this,LogIN.class);
-//                startActivity(intent);
 
 
-    }
+        //critical code
+
+
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference cities = databaseRef.child("USERS");
+        // Query citiesQuery = cities.orderByKey();
+        Query citiesQuery = cities.orderByChild("isalerted").equalTo("yes");
+
+
+        citiesQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                Intent intentss=getIntent();
+                String emailintent=intentss.getStringExtra("INTENTEXTRA");
+                keyintent=intentss.getStringExtra("KEYEXTRA");
+
+
+                //for get alert
+                 double[] arlatz;
+                 double[] arlongiz;
+                 String[] arstringz;
+                 String[] arkeyz;
+
+                List<String> lstnamez = new ArrayList<String>();
+                List<String> lstlatz = new ArrayList<String>();
+                List<String> lstlongiz = new ArrayList<String>();
+                List<String> lstkeymz = new ArrayList<String>();
+
+                //end for getalert
+
+                if(snapshot.exists()){
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                        lstlatz.add(postSnapshot.child("Lat").getValue().toString());
+                        lstnamez.add(postSnapshot.child("Name").getValue().toString());
+                        lstlongiz.add(postSnapshot.child("Long").getValue().toString());
+                        lstkeymz.add(postSnapshot.child("keym").getValue().toString());
+                    }
+                }
+
+                arlatz = new double[lstlatz.size()];
+                arlongiz = new double[lstlongiz.size()];
+                arstringz = new String[lstnamez.size()];
+                arkeyz = new String[lstkeymz.size()];
+
+                for (int i = 0; i < lstlatz.size(); ++i) {
+                    arlatz[i] = Double.parseDouble(lstlatz.get(i));
+                    arlongiz[i] = Double.parseDouble(lstlongiz.get(i));
+                    arstringz[i] = lstnamez.get(i);
+                    arkeyz[i]=lstkeymz.get(i);
+
+
+                }
+
+
+                System.out.println("alerted keys no---=-=-=-=-============"+arkeyz.length);
+                if(arkeyz.length>0)
+                {
+                    System.out.println(arkeyz[0]);
+                    if(arkeyz[0].equals(keyintent))
+                    {
+                        Intent inten=new Intent(MainActivity.this,AlertActivity.class);
+                        startActivity(inten);
+                    }
+
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("FAILED to retrive data of nearest person");
+            }
+        });
+
+
+
+        //end critical code
+
+
+
+
+
+
+        getLocations();
+    }//END ON CREATE
+
+
+
+
+
+
+
+
 
 
     public void getLocations(){
@@ -163,19 +287,43 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
         if(namef.length>0){
 
-            tvnearestperson.setText(namef[0]);
+           // tvnearestperson.setText(namef[0]);
 
             int minindex=FindSmallest(distancef,keynf);
 
-            //tvnearestperson.setText(minindex);
+          //  tvnearestperson.setText(minindex);
+
             String minindexstring=String.valueOf(minindex);
             tvnearestperson.append(minindexstring);
+            tvnearestperson.append(namef[minindex]);
+
+            //critical code
+
+            String npkey=keynf[minindex];
+            double nplat=latf[minindex];
+            double nplong=lonf[minindex];
+            String npemail=namef[minindex];
+
+
+
+            Insert a = new Insert();
+            a.update2database(npkey,nplat,nplong,npemail,npkey,"no");
+
+
+
+
+            //end of critical code
+
+
+
+
+
         }
 
 
 
 
-
+//
 //        Bundle b = new Bundle();
 //        b.putDoubleArray("latf", latf);
 //        b.putDoubleArray("longf", lonf);
@@ -192,7 +340,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
         for (int i = 1; i < arr1.length; i++) {
 
-            if (arr1[i] < min && !arrstr[i].equals(keyintent)) {
+            if (arr1[i] < min && !(arrstr[i].equals(keyintent))) {
+
                 min = arr1[i];
                 index = i;
             }

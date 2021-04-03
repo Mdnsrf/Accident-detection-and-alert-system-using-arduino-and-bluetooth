@@ -30,6 +30,19 @@ public class retrivedatadb {
 
     private MyCustomInterface otherNameInterface;
 
+//for get alert
+    public double[] arlatz;
+    public double[] arlongiz;
+    public String[] arstringz;
+    public String[] arkeyz;
+
+    List<String> lstnamez = new ArrayList<String>();
+    List<String> lstlatz = new ArrayList<String>();
+    List<String> lstlongiz = new ArrayList<String>();
+    List<String> lstkeymz = new ArrayList<String>();
+
+    //end for getalert
+
 
 
 
@@ -58,7 +71,7 @@ public class retrivedatadb {
         DatabaseReference cities = databaseRef.child("USERS");
       // Query citiesQuery = cities.orderByKey();
 //        Query citiesQuery = cities.orderByChild("accident").equalTo("yes");
-       Query citiesQuery = cities.orderByChild("keym");
+       Query citiesQuery = cities.orderByChild("Name");
 
         citiesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,9 +84,6 @@ public class retrivedatadb {
                     lstkeym.add(postSnapshot.child("keym").getValue().toString());
 
 
-                    //  Log.d("firebasesuccess", String.valueOf(postSnapshot.child("Name").getValue().toString()));
-//
-//                }
                 }
                 databaseRef.removeEventListener(this);
 
@@ -147,43 +157,51 @@ public class retrivedatadb {
 
 
 
-    String getlocationalertmethod (double latitudecld, double longitudecld){
-
-
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference cities = databaseRef.child("USERS");
-       // Query citiesQuery = cities.orderByKey();
-       Query citiesQuery = cities.orderByChild("accident").equalTo("yes");
-
-
-        citiesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    lstlat.add(postSnapshot.child("Lat").getValue().toString());
-                    lstname.add(postSnapshot.child("Name").getValue().toString());
-                    lstlongi.add(postSnapshot.child("Long").getValue().toString());
-                    //  Log.d("firebasesuccess", String.valueOf(postSnapshot.child("Name").getValue().toString()));
-
-                }
-                databaseRef.removeEventListener(this);
-
-            }//end onDataChange()
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-
-
-
-        });//end SingleValueEvent listener
-
-
-
-        return " ";
-    }
+//    void getlocationalertmethod (){
+//
+//
+//
+//
+//
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+//        DatabaseReference cities = databaseRef.child("USERS");
+//       // Query citiesQuery = cities.orderByKey();
+//       Query citiesQuery = cities.orderByChild("isalerted").equalTo("yes");
+//
+//
+//       citiesQuery.addValueEventListener(new ValueEventListener() {
+//           @Override
+//           public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//               for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+//                   lstlatz.add(postSnapshot.child("Lat").getValue().toString());
+//                   lstnamez.add(postSnapshot.child("Name").getValue().toString());
+//                   lstlongiz.add(postSnapshot.child("Long").getValue().toString());
+//                   lstkeymz.add(postSnapshot.child("keym").getValue().toString());
+//               }
+//
+//               arlatz = new double[lstlatz.size()];
+//               arlongiz = new double[lstlongiz.size()];
+//               arstringz = new String[lstnamez.size()];
+//               arkeyz = new String[lstkeymz.size()];
+//
+//               for (String ky:arkeyz) {
+//                   if(ky.equals("j")){
+//
+//                   }
+//               }
+//
+//
+//           }
+//
+//           @Override
+//           public void onCancelled(@NonNull DatabaseError error) {
+//
+//           }
+//       });
+//
+//
+//    }
 
 
 
