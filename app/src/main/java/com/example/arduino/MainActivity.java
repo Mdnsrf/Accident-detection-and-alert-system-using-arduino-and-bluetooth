@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
     public String minperson;
     public  double[] distance;
     public  double minimum=0.0;
-    public int minimumindex=0;
+  //  public int minimumindex=0;
 
     public double latitude;
     public double longitude;
