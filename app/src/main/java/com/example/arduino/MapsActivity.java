@@ -4,6 +4,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -45,19 +46,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        System.out.println("inside alert activity====");
+
         Bundle b = getIntent().getExtras();
-        String[] nameff = b.getStringArray("namef");
-        double[] latff = b.getDoubleArray("latf");
-        double[] lonff = b.getDoubleArray("longf");
-        LatLng sydney[] = new LatLng[25];
-        for (int i = 0; i < latff.length; i++) {
-            sydney[i] = new LatLng(latff[i], lonff[i]);
-            mMap.addMarker(new MarkerOptions().position(sydney[i]).title(nameff[i]));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney[i]));
+        double lati = b.getDouble("ACPLAT");
+        double longi = b.getDouble("ACPLONG");
+        String name = b.getString("ACPNAME");
+
+        System.out.println(lati+"   "+longi);
+
+
+            LatLng sydney = new LatLng(lati, longi);
+            mMap.addMarker(new MarkerOptions().position(sydney).title(name));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
 
 
-        }
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -71,9 +77,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
 
 
+
+    }
+}
+
+
+
+
 //        LatLng sydney = new LatLng(latff[1], lonff[1]);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-    }
-}
+
+
+
+
+
+//        Bundle b = getIntent().getExtras();
+//        String[] nameff = b.getStringArray("namef");
+//        double[] latff = b.getDoubleArray("latf");
+//        double[] lonff = b.getDoubleArray("longf");
+//        LatLng sydney[] = new LatLng[25];
+//        for (int i = 0; i < latff.length; i++) {
+//            sydney[i] = new LatLng(latff[i], lonff[i]);
+//            mMap.addMarker(new MarkerOptions().position(sydney[i]).title(nameff[i]));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney[i]));

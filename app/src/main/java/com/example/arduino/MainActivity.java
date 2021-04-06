@@ -187,11 +187,13 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                  double[] arlongiz;
                  String[] arstringz;
                  String[] arkeyz;
+                 String[] araccidentpersonkeyz;
 
                 List<String> lstnamez = new ArrayList<String>();
                 List<String> lstlatz = new ArrayList<String>();
                 List<String> lstlongiz = new ArrayList<String>();
                 List<String> lstkeymz = new ArrayList<String>();
+                List<String>lstaccidentpersonkeyz= new ArrayList<String>();
 
                 //end for getalert
 
@@ -202,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                         lstnamez.add(postSnapshot.child("Name").getValue().toString());
                         lstlongiz.add(postSnapshot.child("Long").getValue().toString());
                         lstkeymz.add(postSnapshot.child("keym").getValue().toString());
+                        lstaccidentpersonkeyz.add(postSnapshot.child("accident").getValue().toString());
                     }
                 }
 
@@ -209,12 +212,15 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                 arlongiz = new double[lstlongiz.size()];
                 arstringz = new String[lstnamez.size()];
                 arkeyz = new String[lstkeymz.size()];
+                araccidentpersonkeyz=new String[lstaccidentpersonkeyz.size()];
+
 
                 for (int i = 0; i < lstlatz.size(); ++i) {
                     arlatz[i] = Double.parseDouble(lstlatz.get(i));
                     arlongiz[i] = Double.parseDouble(lstlongiz.get(i));
                     arstringz[i] = lstnamez.get(i);
                     arkeyz[i]=lstkeymz.get(i);
+                    araccidentpersonkeyz[i]=lstaccidentpersonkeyz.get(i);
 
                 }
 
@@ -229,6 +235,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
                         Insert b2 = new Insert();
                         b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
+
+                        inten.putExtra("ACCPERSONKEY", araccidentpersonkeyz[0]);
+                        System.out.println("Main Act:"+araccidentpersonkeyz[0]+"====");
                         startActivity(inten);
                     }
 
@@ -306,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
             Insert a = new Insert();
-            a.update2database(npkey,nplat,nplong,npemail,npkey,"no");
+            a.update2database(npkey,nplat,nplong,npemail,npkey,keyintent);
 
 
 

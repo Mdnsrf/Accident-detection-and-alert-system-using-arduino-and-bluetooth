@@ -60,6 +60,7 @@ public class LogIN extends AppCompatActivity {
                 String em=email.getText().toString();
                 String pas=password.getText().toString();
                 createAccount(em,pas);
+
             }
         });
 
@@ -100,13 +101,30 @@ public class LogIN extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+                            Toast.makeText(LogIN.this, "Registration Success.",
+                                    Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "Email sent.");
+                                                Toast.makeText(LogIN.this, "VERIFICATION EMAIL SENT.",
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
                             System.out.println(user);
+
+
                             // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LogIN.this, "Authentication failed.",
+                            Toast.makeText(LogIN.this, "Registration failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -149,5 +167,23 @@ public class LogIN extends AppCompatActivity {
                 });
         // [END sign_in_with_email]
     }
+
+    private void sendEmailVerification() {
+        // Send verification email
+        // [START send_email_verification]
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Email sent
+
+                        Toast.makeText(LogIN.this, "VERIFICATION EMAIL SENT.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+    }
+
 
 }
