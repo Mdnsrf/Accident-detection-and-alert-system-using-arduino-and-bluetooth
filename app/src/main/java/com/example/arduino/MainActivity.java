@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                     arstringz[i] = lstnamez.get(i);
                     arkeyz[i]=lstkeymz.get(i);
 
-
                 }
 
 
@@ -227,13 +226,13 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                     if(arkeyz[0].equals(keyintent))
                     {
                         Intent inten=new Intent(MainActivity.this,AlertActivity.class);
+
+                        Insert b2 = new Insert();
+                        b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
                         startActivity(inten);
                     }
 
                 }
-
-
-
 
             }
 
@@ -278,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         else {
             gpsTracker.showSettingsAlert();
         }
-        System.out.println("insied get location=========");
+        System.out.println("============insied get location=========");
 }
 
 
