@@ -17,7 +17,24 @@
         android:roundIcon="@mipmap/ic_launcher_srf_yellowgr_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARDUINO">
-        <activity android:name=".AlertActivity"></activity>
+
+
+        <activity android:name=".Register">
+        </activity>
+
+
+
+
+        <activity android:name=".AlertActivity" >
+        </activity>
+
+
+
+
+
+
+
+
         <activity android:name=".LogIN">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

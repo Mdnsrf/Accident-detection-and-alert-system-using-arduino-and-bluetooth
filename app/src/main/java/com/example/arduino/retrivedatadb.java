@@ -51,6 +51,11 @@ public class retrivedatadb {
     public String[] arstring;
     public String[] arkey;
     public double[] distance;
+
+    public String[] arphoneno;
+    public String[] arvehicleno;
+
+
     public double minimum = 0.0;
     public int minimumindex = 0;
 
@@ -61,6 +66,12 @@ public class retrivedatadb {
     List<String> lstlat = new ArrayList<String>();
     List<String> lstlongi = new ArrayList<String>();
     List<String> lstkeym = new ArrayList<String>();
+
+    List<String> lstphone=new ArrayList<String>();
+    List<String> lstvehicleno=new ArrayList<String>();
+
+
+
 
     String returnstring = " ";
 
@@ -81,7 +92,10 @@ public class retrivedatadb {
                     lstlat.add(postSnapshot.child("Lat").getValue().toString());
                     lstname.add(postSnapshot.child("Name").getValue().toString());
                     lstlongi.add(postSnapshot.child("Long").getValue().toString());
-                    lstkeym.add(postSnapshot.child("keym").getValue().toString());
+                    lstkeym.add(postSnapshot.child("Keym").getValue().toString());
+
+                    lstphone.add(postSnapshot.child("Phone").getValue().toString());
+                    lstvehicleno.add(postSnapshot.child("Vehicleno").getValue().toString());
 
 
                 }
@@ -100,11 +114,18 @@ public class retrivedatadb {
                 arkey = new String[lstkeym.size()];
                 distance = new double[lstlat.size()];
 
+                arphoneno=new String[lstphone.size()];
+                arvehicleno=new  String[lstphone.size()];
+
                 for (int i = 0; i < lstlat.size(); ++i) {
                     arlat[i] = Double.parseDouble(lstlat.get(i));
                     arlongi[i] = Double.parseDouble(lstlongi.get(i));
                     arstring[i] = lstname.get(i);
                     arkey[i]=lstkeym.get(i);
+
+                    arphoneno[i]=lstphone.get(i);
+                    arvehicleno[i]=lstvehicleno.get(i);
+
 
                     distance[i] = distance(latitudecld, longitudecld, arlat[i], arlongi[i], 'K');
 
@@ -120,7 +141,7 @@ public class retrivedatadb {
 
                 if (distance.length != 0) {
                     minimumindex = FindSmallest(distance);//finding minimum index
-                    System.out.println("minimum index=====" + minimumindex);
+                    System.out.println("=====minimum index=====" + minimumindex);
                     System.out.println("=====minimum person name=====" + arstring[minimumindex]);
                     returnstring = returnstring.concat(arstring[minimumindex]);
                 } else {
@@ -136,7 +157,7 @@ public class retrivedatadb {
 //
 //                }
 
-                otherNameInterface.sendData(arlat,arlongi,arstring,arkey,distance);
+                otherNameInterface.sendData(arlat,arlongi,arstring,arkey,distance,arphoneno,arvehicleno);
 
 
 

@@ -94,14 +94,26 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         tvnearestperson=(TextView)findViewById(R.id.tv_minperson);
         personname=(EditText)findViewById(R.id.editTextTextPersonName);
 
+//
+//        Intent intentss=getIntent();
+//        String emailintent=intentss.getStringExtra("INTENTEXTRA");
+//         keyintent=intentss.getStringExtra("KEYEXTRA");
 
-        Intent intentss=getIntent();
-        String emailintent=intentss.getStringExtra("INTENTEXTRA");
-         keyintent=intentss.getStringExtra("KEYEXTRA");
+        Bundle b = getIntent().getExtras();
+
+
+               keyintent = b.getString("KEYEXTRA");
+        String nameintent  = b.getString("NAME");
+        String vehicleintent = b.getString("VEHICLENO");
+        String phoneintent = b.getString("PHONENO");
+
+
+
+
 
 
        // personname.setText(emailintent);
-        tvnearestperson.setText(emailintent);
+        tvnearestperson.setText("WELCOME "+nameintent);
         tvnearestperson.setMovementMethod(new ScrollingMovementMethod());
 
 
@@ -146,10 +158,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         btn_2.setOnClickListener(new View.OnClickListener() {//BUTTON FOR INSERT
             @Override
             public void onClick(View v) {
-                Insert b = new Insert();
 
-               String namepara= personname.getText().toString();
-                b.insert2database(keyintent,latitude,longitude,emailintent,keyintent,"no");//method of Insert class
+                Insert b = new Insert();
+                b.insert2database(keyintent,latitude,longitude,nameintent,"no",phoneintent,vehicleintent);//method of Insert class
             }
         });
 
@@ -169,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference cities = databaseRef.child("USERS");
         // Query citiesQuery = cities.orderByKey();
-        Query citiesQuery = cities.orderByChild("isalerted").equalTo("yes");
+        Query citiesQuery = cities.orderByChild("Isalerted").equalTo("yes");
 
 
         citiesQuery.addValueEventListener(new ValueEventListener() {
@@ -188,12 +199,20 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                  String[] arstringz;
                  String[] arkeyz;
                  String[] araccidentpersonkeyz;
+                 String[] arvehiclenoplatez;
+                 String[] aremailz;
+                 String[] arphonenoz;
 
                 List<String> lstnamez = new ArrayList<String>();
                 List<String> lstlatz = new ArrayList<String>();
                 List<String> lstlongiz = new ArrayList<String>();
                 List<String> lstkeymz = new ArrayList<String>();
                 List<String>lstaccidentpersonkeyz= new ArrayList<String>();
+
+                List<String>lstvehiclenoplatez=new ArrayList<String>();
+
+                List<String>lstphonez=new ArrayList<String>();
+
 
                 //end for getalert
 
@@ -203,8 +222,11 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                         lstlatz.add(postSnapshot.child("Lat").getValue().toString());
                         lstnamez.add(postSnapshot.child("Name").getValue().toString());
                         lstlongiz.add(postSnapshot.child("Long").getValue().toString());
-                        lstkeymz.add(postSnapshot.child("keym").getValue().toString());
-                        lstaccidentpersonkeyz.add(postSnapshot.child("accident").getValue().toString());
+                        lstkeymz.add(postSnapshot.child("Keym").getValue().toString());
+                        lstaccidentpersonkeyz.add(postSnapshot.child("Accident").getValue().toString());
+
+                        lstvehiclenoplatez.add(postSnapshot.child("Vehicleno").getValue().toString());
+                        lstphonez.add(postSnapshot.child("Phone").getValue().toString());
                     }
                 }
 
@@ -214,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                 arkeyz = new String[lstkeymz.size()];
                 araccidentpersonkeyz=new String[lstaccidentpersonkeyz.size()];
 
+                arvehiclenoplatez=new String[lstvehiclenoplatez.size()];
+                arphonenoz=new String[lstphonez.size()];
+
 
                 for (int i = 0; i < lstlatz.size(); ++i) {
                     arlatz[i] = Double.parseDouble(lstlatz.get(i));
@@ -221,6 +246,9 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                     arstringz[i] = lstnamez.get(i);
                     arkeyz[i]=lstkeymz.get(i);
                     araccidentpersonkeyz[i]=lstaccidentpersonkeyz.get(i);
+
+                    arvehiclenoplatez[i]=lstvehiclenoplatez.get(i);
+                    arphonenoz[i]=lstphonez.get(i);
 
                 }
 
@@ -234,7 +262,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                         Intent inten=new Intent(MainActivity.this,AlertActivity.class);
 
                         Insert b2 = new Insert();
-                        b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
+                       // b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
+                        b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],"no",arphonenoz[0],arvehiclenoplatez[0]);//method of Insert class
 
                         inten.putExtra("ACCPERSONKEY", araccidentpersonkeyz[0]);
                         System.out.println("Main Act:"+araccidentpersonkeyz[0]+"====");
@@ -291,18 +320,14 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
     @Override
-    public void sendData(double[] latf, double[] lonf, String[] namef,String keynf[],double distancef[]) {
+    public void sendData(double[] latf, double[] lonf, String[] namef,String keynf[],double distancef[],String phonef[],String vehiclenof[]) {
 
         if(namef.length>0){
 
-           // tvnearestperson.setText(namef[0]);
-
             int minindex=FindSmallest(distancef,keynf);
 
-          //  tvnearestperson.setText(minindex);
-
             String minindexstring=String.valueOf(minindex);
-            tvnearestperson.append(minindexstring);
+            tvnearestperson.append(minindexstring+" ");
             tvnearestperson.append(namef[minindex]);
 
             //critical code
@@ -310,12 +335,16 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
             String npkey=keynf[minindex];
             double nplat=latf[minindex];
             double nplong=lonf[minindex];
-            String npemail=namef[minindex];
+            String npname=namef[minindex];
+
+            String npphoneno=phonef[minindex];
+            String npvehicleno=vehiclenof[minindex];
+
 
 
 
             Insert a = new Insert();
-            a.update2database(npkey,nplat,nplong,npemail,npkey,keyintent);
+            a.update2database(npkey,nplat,nplong,npname,keyintent,npphoneno,npvehicleno);
 
 
 
