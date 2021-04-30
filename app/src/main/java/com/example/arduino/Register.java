@@ -93,7 +93,7 @@ public class Register extends AppCompatActivity {
                             String authkey=user.getUid();
 
                             //critical code
-                                    Intent intent=new Intent(Register.this,MainActivity.class);
+                                    Intent intent=new Intent(Register.this,BluetoothActivity.class);
                                     Bundle b = new Bundle();
 
                                     name=nameet.getText().toString();

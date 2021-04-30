@@ -149,8 +149,8 @@ public class retrivedatadb {
                 }
 
 
-                TextView txtView = (TextView) ((Activity)context).findViewById(R.id.tv_minperson);
-                txtView.setText(returnstring);
+//                TextView txtView = (TextView) ((Activity)context).findViewById(R.id.tv_minperson);
+//                txtView.setText(returnstring);
 
 //                for (int i = 0; i < arlat.length; i++) {
 //                    txtView.append("\n Distance "+String.format("%.2f",distance[i])+" KM "+arstring[i]);

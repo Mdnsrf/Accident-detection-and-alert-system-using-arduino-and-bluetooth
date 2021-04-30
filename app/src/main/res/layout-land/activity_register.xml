@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Register">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="221dp"
+        android:layout_height="71dp"
+        android:fontFamily="@font/anton"
+        android:text="Register"
+        android:textSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.337"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007" />
+
+    <EditText
+        android:id="@+id/etNAMEreg"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:drawableEnd="@drawable/name"
+        android:ems="10"
+        android:fontFamily="@font/archivo_black"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textColor="#F06449"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.443" />
+
+    <EditText
+        android:id="@+id/etPASSWORDreg"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:drawableEnd="@drawable/key"
+        android:ems="10"
+        android:fontFamily="@font/archivo_black"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="#F06449"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58" />
+
+    <EditText
+        android:id="@+id/etEMAILreg"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:drawableEnd="@drawable/email"
+        android:ems="10"
+        android:fontFamily="@font/archivo_black"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#F06449"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.305" />
+
+    <EditText
+        android:id="@+id/etPHONEreg"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:drawableEnd="@drawable/dialdots"
+        android:ems="10"
+        android:fontFamily="@font/archivo_black"
+        android:hint="Phone no"
+        android:inputType="phone"
+        android:textColor="#F06449"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.721" />
+
+    <EditText
+        android:id="@+id/etVEHICLENOreg"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:drawableEnd="@drawable/car"
+        android:ems="10"
+        android:fontFamily="@font/archivo_black"
+        android:hint="Vehicle no"
+        android:inputType="textPersonName"
+        android:textColor="#F06449"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.862" />
+
+    <Button
+        android:id="@+id/btREGISTERreg"
+        android:layout_width="215dp"
+        android:layout_height="45dp"
+        android:fontFamily="@font/archivo_black"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

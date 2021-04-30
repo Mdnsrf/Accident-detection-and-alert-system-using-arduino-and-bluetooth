@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/alfa_slab_one</item>
+        <item>@font/antic_slab</item>
+        <item>@font/anton</item>
+        <item>@font/archivo_black</item>
+        <item>@font/biryani_extrabold</item>
+        <item>@font/chivo</item>
+        <item>@font/doppio_one</item>
+        <item>@font/fjalla_one</item>
+        <item>@font/hammersmith_one</item>
+        <item>@font/orbitron_medium</item>
+        <item>@font/poppins_medium</item>
+        <item>@font/syncopate_bold</item>
+    </array>
+</resources>

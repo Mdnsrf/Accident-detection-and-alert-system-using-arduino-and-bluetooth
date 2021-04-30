@@ -238,10 +238,9 @@ public class LogIN extends AppCompatActivity {
 
                 }
 
-                Intent intent=new Intent(LogIN.this,MainActivity.class);
+                Intent intent=new Intent(LogIN.this,BluetoothActivity.class);
 
                 Bundle b = new Bundle();
-//                            b.putString("EMAIL",emailid);
 
                 b.putString("KEYEXTRA",authkey);
                 b.putString("NAME",arstringz[0]);

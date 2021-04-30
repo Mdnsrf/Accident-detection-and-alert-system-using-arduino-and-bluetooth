@@ -26,6 +26,7 @@ public class Insert {
         student.put("Accident",accident);
         student.put("Isalerted","no");
         student.put("Vehicleno",vehicleno);
+        student.put("Isactive","yes");
 
 //        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 //        DatabaseReference tasksRef = rootRef.child("USERS").push();
@@ -59,7 +60,7 @@ public class Insert {
         student.put("Vehicleno",vehiclenoo);
 
         student.put("Isalerted","yes");
-
+        student.put("Isactive","yes");
 
         DatabaseReference rootRef2 = FirebaseDatabase.getInstance().getReference();
         DatabaseReference tasksRef2 = rootRef2.child("USERS").child(keyzz);
@@ -67,8 +68,28 @@ public class Insert {
         return;
     }
 
+    public void insert2databasefinal(String keyz,double latitude,double longitude,String name,String accident,String phoneno,String vehicleno)
+    {
+        HashMap<String,String> student=new HashMap<>();
+
+        student.put("Keym",keyz);
+
+        student.put("Lat", String.valueOf(latitude));   //JUST CHANGE VALUE HERE
+        student.put("Long", String.valueOf(longitude));   //JUST CHANGE VALUE HERE
+        student.put("Name",name);  //JUST CHANGE VALUE HERE
+        student.put("Phone", phoneno);   //JUST CHANGE VALUE HERE
+        student.put("Accident",accident);
+        student.put("Isalerted","no");
+        student.put("Vehicleno",vehicleno);
+        student.put("Isactive","no");
 
 
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference tasksRef = rootRef.child("USERS").child(keyz);
+        tasksRef.setValue(student);
+        return;
+
+    }
 
 
 

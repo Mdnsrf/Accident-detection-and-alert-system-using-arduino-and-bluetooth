@@ -8,6 +8,8 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,24 +19,12 @@
         android:roundIcon="@mipmap/ic_launcher_srf_yellowgr_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARDUINO">
+        <activity android:name=".LedControl"></activity>
+        <activity android:name=".Register"></activity>
+        <activity android:name=".AlertActivity"></activity>
+        <activity android:name=".BluetoothActivity">
 
-
-        <activity android:name=".Register">
         </activity>
-
-
-
-
-        <activity android:name=".AlertActivity" >
-        </activity>
-
-
-
-
-
-
-
-
         <activity android:name=".LogIN">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,6 +43,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".MapsActivity"

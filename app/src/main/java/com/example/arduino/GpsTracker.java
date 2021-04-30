@@ -40,11 +40,11 @@ class GpsTracker extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2; // 10 meters 1=1meters
 
     // The minimum time between updates in milliseconds
 //    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 5 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 30 * 1; // 30sec
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -180,7 +180,7 @@ class GpsTracker extends Service implements LocationListener {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         // Setting Dialog Title
-        alertDialog.setTitle("GPS is settings");
+        alertDialog.setTitle("Enable GPS In Settings");
 
         // Setting Dialog Message
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
@@ -194,9 +194,10 @@ class GpsTracker extends Service implements LocationListener {
         });
 
         // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+
             }
         });
         alertDialog.show();
