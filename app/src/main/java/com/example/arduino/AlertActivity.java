@@ -2,6 +2,7 @@ package com.example.arduino;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,14 +33,14 @@ public class AlertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
 
-        tvAccidentpersonname=(TextView)findViewById(R.id.apnnameALRT);
-        tvAccidentvehicleno=(TextView)findViewById(R.id.apnoplateALRT);
-        tvPhonenumber=(TextView)findViewById(R.id.apnophoneALRT);
-        byes=(Button)findViewById(R.id.btyesALRT);
-        bno=(Button)findViewById(R.id.btnoALRT);
+        tvAccidentpersonname = (TextView) findViewById(R.id.apnnameALRT);
+        tvAccidentvehicleno = (TextView) findViewById(R.id.apnoplateALRT);
+        tvPhonenumber = (TextView) findViewById(R.id.apnophoneALRT);
+        byes = (Button) findViewById(R.id.btyesALRT);
+        bno = (Button) findViewById(R.id.btnoALRT);
 
-        Intent intentss=getIntent();
-        String accidentpersonkey=intentss.getStringExtra("ACCPERSONKEY");
+        Intent intentss = getIntent();
+        String accidentpersonkey = intentss.getStringExtra("ACCPERSONKEY");
 
         //critical code
 
@@ -66,13 +67,13 @@ public class AlertActivity extends AppCompatActivity {
                 List<String> lstlatz = new ArrayList<String>();
                 List<String> lstlongiz = new ArrayList<String>();
                 List<String> lstkeymz = new ArrayList<String>();
-                List<String>lstaccidentpersonkeyz= new ArrayList<String>();
-                List<String> lstvehiclenoz=new ArrayList<String>();
-                List<String> lstphonenoz=new ArrayList<String>();
+                List<String> lstaccidentpersonkeyz = new ArrayList<String>();
+                List<String> lstvehiclenoz = new ArrayList<String>();
+                List<String> lstphonenoz = new ArrayList<String>();
 
                 //end for getalert
 
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
                         lstlatz.add(postSnapshot.child("Lat").getValue().toString());
@@ -90,27 +91,25 @@ public class AlertActivity extends AppCompatActivity {
                 arlongiz = new double[lstlongiz.size()];
                 arstringz = new String[lstnamez.size()];
                 arkeyz = new String[lstkeymz.size()];
-                araccidentpersonkeyz=new String[lstaccidentpersonkeyz.size()];
-                arvehiclenoz=new String[lstvehiclenoz.size()];
-                arphonenoz=new String[lstphonenoz.size()];
+                araccidentpersonkeyz = new String[lstaccidentpersonkeyz.size()];
+                arvehiclenoz = new String[lstvehiclenoz.size()];
+                arphonenoz = new String[lstphonenoz.size()];
 
 
                 for (int i = 0; i < lstlatz.size(); ++i) {
                     arlatz[i] = Double.parseDouble(lstlatz.get(i));
                     arlongiz[i] = Double.parseDouble(lstlongiz.get(i));
                     arstringz[i] = lstnamez.get(i);
-                    arkeyz[i]=lstkeymz.get(i);
-                    araccidentpersonkeyz[i]=lstaccidentpersonkeyz.get(i);
-                    arvehiclenoz[i]=lstvehiclenoz.get(i);
-                    arphonenoz[i]=lstphonenoz.get(i);
+                    arkeyz[i] = lstkeymz.get(i);
+                    araccidentpersonkeyz[i] = lstaccidentpersonkeyz.get(i);
+                    arvehiclenoz[i] = lstvehiclenoz.get(i);
+                    arphonenoz[i] = lstphonenoz.get(i);
                 }
 
                 System.out.println("AlertActivity:===inside alert actity===");
-                if(arkeyz.length>0)
-                {
-                    System.out.println("AlertActivity:===key of accident person===:"+arkeyz[0]);
-                    if(arkeyz[0].equals(accidentpersonkey))
-                    {
+                if (arkeyz.length > 0) {
+                    System.out.println("AlertActivity:===key of accident person===:" + arkeyz[0]);
+                    if (arkeyz[0].equals(accidentpersonkey)) {
 
 
                         tvAccidentpersonname.setText(arstringz[0]);
@@ -127,17 +126,17 @@ public class AlertActivity extends AppCompatActivity {
                         byes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intens=new Intent(AlertActivity.this,MapsActivity.class);
+                                Intent intens = new Intent(AlertActivity.this, MapsActivity.class);
 
-                        Bundle b = new Bundle();
+                                Bundle b = new Bundle();
 
-                        b.putDouble("ACPLAT",arlatz[0]);
-                        b.putDouble("ACPLONG",arlongiz[0]);
-                        b.putString("ACPNAME",arstringz[0]);
+                                b.putDouble("ACPLAT", arlatz[0]);
+                                b.putDouble("ACPLONG", arlongiz[0]);
+                                b.putString("ACPNAME", arstringz[0]);
 
-                      intens.putExtras(b);
+                                intens.putExtras(b);
 
-                       startActivity(intens);
+                                startActivity(intens);
                             }
                         });
 
@@ -168,9 +167,6 @@ public class AlertActivity extends AppCompatActivity {
 
     }
 }
-
-
-
 
 
 //                        intens.putExtra("ACPNAME",arstringz[0]);

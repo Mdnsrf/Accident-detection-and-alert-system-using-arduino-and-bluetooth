@@ -18,38 +18,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-
 public class Register extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    String name,email,password,vehicleno,phoneno;
+    private static final String TAG = "EmailPassword";
+    String name, email, password, vehicleno, phoneno;
     EditText nameet;
     EditText emailet;
     EditText passwordet;
     EditText vehiclenoet;
     EditText phonenoet;
     Button btnreg;
-
-
-    private static final String TAG = "EmailPassword";
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nameet=(EditText)findViewById(R.id.etNAMEreg);
-        emailet=(EditText)findViewById(R.id.etEMAILreg);
-        passwordet=(EditText)findViewById(R.id.etPASSWORDreg);
-        vehiclenoet=(EditText)findViewById(R.id.etVEHICLENOreg);
-        phonenoet=(EditText)findViewById(R.id.etPHONEreg);
-        btnreg=(Button)findViewById(R.id.btREGISTERreg);
+        nameet = (EditText) findViewById(R.id.etNAMEreg);
+        emailet = (EditText) findViewById(R.id.etEMAILreg);
+        passwordet = (EditText) findViewById(R.id.etPASSWORDreg);
+        vehiclenoet = (EditText) findViewById(R.id.etVEHICLENOreg);
+        phonenoet = (EditText) findViewById(R.id.etPHONEreg);
+        btnreg = (Button) findViewById(R.id.btREGISTERreg);
 
-        name=nameet.getText().toString();
-        email=emailet.getText().toString();
-        password=passwordet.getText().toString();
-        vehicleno=vehiclenoet.getText().toString();
-        phoneno=phonenoet.getText().toString();
+        name = nameet.getText().toString();
+        email = emailet.getText().toString();
+        password = passwordet.getText().toString();
+        vehicleno = vehiclenoet.getText().toString();
+        phoneno = phonenoet.getText().toString();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -63,21 +60,20 @@ public class Register extends AppCompatActivity {
 //                vehicleno=vehiclenoet.getText().toString();
 //                phoneno=phonenoet.getText().toString();
 
-                email=emailet.getText().toString();
-                password=passwordet.getText().toString();
+                email = emailet.getText().toString();
+                password = passwordet.getText().toString();
 
-                System.out.println(email+"========"+password);
+                System.out.println(email + "========" + password);
 
-                createAccount(email,password);
+                createAccount(email, password);
 
             }
         });
 
 
-
     }
 
-     void createAccount(String emailx, String passwordx) {
+    void createAccount(String emailx, String passwordx) {
         // [START create_user_with_email]
 
         mAuth.createUserWithEmailAndPassword(emailx, passwordx)
@@ -90,26 +86,26 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "Registration Success.", Toast.LENGTH_LONG).show();
 
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String authkey=user.getUid();
+                            String authkey = user.getUid();
 
                             //critical code
-                                    Intent intent=new Intent(Register.this,BluetoothActivity.class);
-                                    Bundle b = new Bundle();
+                            Intent intent = new Intent(Register.this, BluetoothActivity.class);
+                            Bundle b = new Bundle();
 
-                                    name=nameet.getText().toString();
+                            name = nameet.getText().toString();
 //                                    email=emailet.getText().toString();
 //                                    password=passwordet.getText().toString();
-                                    vehicleno=vehiclenoet.getText().toString();
-                                    phoneno=phonenoet.getText().toString();
+                            vehicleno = vehiclenoet.getText().toString();
+                            phoneno = phonenoet.getText().toString();
 
-                                    b.putString("KEYEXTRA",authkey);
-                                    b.putString("NAME",name);
-                                    b.putString("VEHICLENO",vehicleno);
-                                    b.putString("PHONENO",phoneno);
+                            b.putString("KEYEXTRA", authkey);
+                            b.putString("NAME", name);
+                            b.putString("VEHICLENO", vehicleno);
+                            b.putString("PHONENO", phoneno);
 
-                                    intent.putExtras(b);
+                            intent.putExtras(b);
 
-                                    startActivity(intent);
+                            startActivity(intent);
                             //end critical code
 
 
@@ -125,7 +121,7 @@ public class Register extends AppCompatActivity {
                                         }
                                     });
 
-                            System.out.println("registration successful of "+user);
+                            System.out.println("registration successful of " + user);
 
 
                             // updateUI(user);

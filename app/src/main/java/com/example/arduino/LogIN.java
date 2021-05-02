@@ -28,16 +28,14 @@ import java.util.List;
 
 public class LogIN extends AppCompatActivity {
 
+    private static final String TAG = "LOGIN";
     Button login;
     Button register;
     EditText email;
     EditText password;
-
     String authkey;
-
     private FirebaseAuth mAuth;
 
-    private static final String TAG = "LOGIN";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,35 +43,30 @@ public class LogIN extends AppCompatActivity {
         setContentView(R.layout.activity_log_i_n);
 
 
-        login=(Button)findViewById(R.id.bLOGIN);
-        register=(Button)findViewById(R.id.bREGISTER);
-        email=(EditText)findViewById(R.id.etEMAIL);
-        password=(EditText)findViewById(R.id.etPASSWORD);
+        login = (Button) findViewById(R.id.bLOGIN);
+        register = (Button) findViewById(R.id.bREGISTER);
+        email = (EditText) findViewById(R.id.etEMAIL);
+        password = (EditText) findViewById(R.id.etPASSWORD);
         mAuth = FirebaseAuth.getInstance();
-
-
-
-
 
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String em=email.getText().toString();
-                String pas=password.getText().toString();
-               signIn(em,pas);
+                String em = email.getText().toString();
+                String pas = password.getText().toString();
+                signIn(em, pas);
             }
         });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LogIN.this,Register.class);
+                Intent intent = new Intent(LogIN.this, Register.class);
                 startActivity(intent);
 
             }
         });
-
 
 
     }
@@ -98,7 +91,6 @@ public class LogIN extends AppCompatActivity {
 ////            startActivity(intent);
 //        }
 //    }
-
 
 
     private void createAccount(String email, String password) {
@@ -133,8 +125,6 @@ public class LogIN extends AppCompatActivity {
                             System.out.println(user);
 
 
-
-
                             // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -159,14 +149,13 @@ public class LogIN extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            String emailid=user.getEmail();
-                             authkey=user.getUid();
+                            String emailid = user.getEmail();
+                            authkey = user.getUid();
                             System.out.println(emailid);
                             dataretrive(authkey);
 
 
-                        }
-                        else {
+                        } else {
 
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LogIN.this, "Authentication failed.",
@@ -195,8 +184,7 @@ public class LogIN extends AppCompatActivity {
 
     }
 
-    private void dataretrive(String authhkey)
-    {
+    private void dataretrive(String authhkey) {
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference cities = databaseRef.child("USERS");
@@ -212,10 +200,10 @@ public class LogIN extends AppCompatActivity {
                 String[] arphonenoz;
 
                 List<String> lstnamez = new ArrayList<String>();
-                List<String>lstvehiclenoplatez=new ArrayList<String>();
-                List<String>lstphonez=new ArrayList<String>();
+                List<String> lstvehiclenoplatez = new ArrayList<String>();
+                List<String> lstphonez = new ArrayList<String>();
 
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
 
@@ -227,31 +215,28 @@ public class LogIN extends AppCompatActivity {
 
 
                 arstringz = new String[lstnamez.size()];
-                arvehiclenoplatez=new String[lstvehiclenoplatez.size()];
-                arphonenoz=new String[lstphonez.size()];
+                arvehiclenoplatez = new String[lstvehiclenoplatez.size()];
+                arphonenoz = new String[lstphonez.size()];
 
                 for (int i = 0; i < lstphonez.size(); ++i) {
 
                     arstringz[i] = lstnamez.get(i);
-                    arvehiclenoplatez[i]=lstvehiclenoplatez.get(i);
-                    arphonenoz[i]=lstphonez.get(i);
+                    arvehiclenoplatez[i] = lstvehiclenoplatez.get(i);
+                    arphonenoz[i] = lstphonez.get(i);
 
                 }
 
-                Intent intent=new Intent(LogIN.this,BluetoothActivity.class);
+                Intent intent = new Intent(LogIN.this, BluetoothActivity.class);
 
                 Bundle b = new Bundle();
 
-                b.putString("KEYEXTRA",authkey);
-                b.putString("NAME",arstringz[0]);
-                b.putString("VEHICLENO",arvehiclenoplatez[0]);
-                b.putString("PHONENO",arphonenoz[0]);
+                b.putString("KEYEXTRA", authkey);
+                b.putString("NAME", arstringz[0]);
+                b.putString("VEHICLENO", arvehiclenoplatez[0]);
+                b.putString("PHONENO", arphonenoz[0]);
 
                 intent.putExtras(b);
                 startActivity(intent);
-
-
-
 
 
             }

@@ -53,15 +53,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double longi = b.getDouble("ACPLONG");
         String name = b.getString("ACPNAME");
 
-        System.out.println(lati+"   "+longi);
+        System.out.println(lati + "   " + longi);
 
 
-            LatLng sydney = new LatLng(lati, longi);
-            mMap.addMarker(new MarkerOptions().position(sydney).title(name));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-
-
+        LatLng sydney = new LatLng(lati, longi);
+        mMap.addMarker(new MarkerOptions().position(sydney).title(name));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -77,20 +74,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
 
 
-
     }
 }
-
-
 
 
 //        LatLng sydney = new LatLng(latff[1], lonff[1]);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-
-
-
 
 
 //        Bundle b = getIntent().getExtras();

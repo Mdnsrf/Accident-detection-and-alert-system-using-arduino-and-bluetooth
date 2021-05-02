@@ -30,7 +30,6 @@ public class LedControl extends AppCompatActivity {
     String phoneintent;
 
 
-
     Button btn1, btn2, btn3, btn4, btn5, btnDis;
     //String address = null;
     TextView lumn;
@@ -54,22 +53,22 @@ public class LedControl extends AppCompatActivity {
 
 
         Bundle b = getIntent().getExtras();
-         keyintent = b.getString("KEYEXTRA");
-         nameintent  = b.getString("NAME");
-         vehicleintent = b.getString("VEHICLENO");
-         phoneintent = b.getString("PHONENO");
+        keyintent = b.getString("KEYEXTRA");
+        nameintent = b.getString("NAME");
+        vehicleintent = b.getString("VEHICLENO");
+        phoneintent = b.getString("PHONENO");
 
         Intent intent = getIntent();
         address = intent.getStringExtra(BluetoothActivity.EXTRA_ADDRESS);
 
-        btn1 =  findViewById(R.id.button2);
-        btn2 =  findViewById(R.id.button3);
+        btn1 = findViewById(R.id.button2);
+        btn2 = findViewById(R.id.button3);
         //For additional actions to be performed
-        btn3 =  findViewById(R.id.button5);
-        btn4 =  findViewById(R.id.button6);
-        btn5 =  findViewById(R.id.button7);
+        btn3 = findViewById(R.id.button5);
+        btn4 = findViewById(R.id.button6);
+        btn5 = findViewById(R.id.button7);
         btnDis = findViewById(R.id.button4);
-        lumn =  findViewById(R.id.textView2);
+        lumn = findViewById(R.id.textView2);
         recievetxt = findViewById(R.id.tv_recieve);
         recievetxt.setMovementMethod(new ScrollingMovementMethod());
 
@@ -78,7 +77,7 @@ public class LedControl extends AppCompatActivity {
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 sendSignal("1");
                 //  beginListenForData();
             }
@@ -86,28 +85,28 @@ public class LedControl extends AppCompatActivity {
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 sendSignal("2");
             }
         });
 
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 sendSignal("3");
             }
         });
 
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 sendSignal("4");
             }
         });
 
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 // sendSignal("5");
                 recievetxt.setText("");
 
@@ -119,14 +118,14 @@ public class LedControl extends AppCompatActivity {
 
         btnDis.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 Disconnect();
             }
         });
     }
 
-    private void sendSignal ( String number ) {
-        if ( btSocket != null ) {
+    private void sendSignal(String number) {
+        if (btSocket != null) {
             try {
                 btSocket.getOutputStream().write(number.toString().getBytes());
             } catch (IOException e) {
@@ -135,11 +134,11 @@ public class LedControl extends AppCompatActivity {
         }
     }
 
-    private void Disconnect () {
-        if ( btSocket!=null ) {
+    private void Disconnect() {
+        if (btSocket != null) {
             try {
                 btSocket.close();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 msg("Error");
             }
         }
@@ -147,7 +146,7 @@ public class LedControl extends AppCompatActivity {
         finish();
     }
 
-    private void msg (String s) {
+    private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
@@ -156,14 +155,14 @@ public class LedControl extends AppCompatActivity {
         private ProgressDialog progress;
 
         @Override
-        protected  void onPreExecute () {
+        protected void onPreExecute() {
             progress = ProgressDialog.show(LedControl.this, "Connecting...", "Please Wait!!!");
         }
 
         @Override
-        protected Void doInBackground (Void... devices) {
+        protected Void doInBackground(Void... devices) {
             try {
-                if ( btSocket==null || !isBtConnected ) {
+                if (btSocket == null || !isBtConnected) {
                     myBluetooth = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);
                     btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);
@@ -171,7 +170,7 @@ public class LedControl extends AppCompatActivity {
                     btSocket.connect();
 
 //                    my added code
-                    if(btSocket!=null){
+                    if (btSocket != null) {
                         // beginListenForData();
                     }
                 }
@@ -183,7 +182,7 @@ public class LedControl extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute (Void result) {
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
             if (!ConnectSuccess) {
@@ -196,27 +195,26 @@ public class LedControl extends AppCompatActivity {
             beginListenForData();
             progress.dismiss();
 
-            Intent i = new Intent(LedControl.this,MainActivity.class);
+            Intent i = new Intent(LedControl.this, MainActivity.class);
             Bundle b = new Bundle();
-            b.putString("KEYEXTRA",keyintent);
-            b.putString("NAME",nameintent);
-            b.putString("VEHICLENO",vehicleintent);
-            b.putString("PHONENO",phoneintent);
+            b.putString("KEYEXTRA", keyintent);
+            b.putString("NAME", nameintent);
+            b.putString("VEHICLENO", vehicleintent);
+            b.putString("PHONENO", phoneintent);
 
-         //   b.putString("ALERTINTENTEXTRA","yes");
+            //   b.putString("ALERTINTENTEXTRA","yes");
 
             i.putExtras(b);
             startActivity(i);
         }
 
 
-
     }
-    void beginListenForData()
-    {
+
+    void beginListenForData() {
 
         try {
-            inputStream=btSocket.getInputStream();
+            inputStream = btSocket.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -225,41 +223,34 @@ public class LedControl extends AppCompatActivity {
         buffer = new byte[1024];
 
 
-
-        Thread thread  = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted() && !stopThread)
-                {
-                    try
-                    {
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                while (!Thread.currentThread().isInterrupted() && !stopThread) {
+                    try {
                         int byteCount = inputStream.available();
-                        if(byteCount > 0)
-                        {
+                        if (byteCount > 0) {
                             byte[] rawBytes = new byte[byteCount];
                             inputStream.read(rawBytes);
-                            final String string=new String(rawBytes,"UTF-8");
+                            final String string = new String(rawBytes, "UTF-8");
                             handler.post(new Runnable() {
-                                public void run()
-                                {
+                                public void run() {
                                     recievetxt.append(string);
-                                    System.out.println("------------"+string);
-                                    if(string.equals("A")){
+                                    System.out.println("------------" + string);
+                                    if (string.equals("A")) {
 //                                        Intent i = new Intent(LedControl.this, AlertActivity.class);
 //                                        startActivity(i);
 
 //                                        MainActivity aa=new MainActivity();
 //                                        aa.tempaccfn();
 
-                                        Intent i = new Intent(LedControl.this,MainActivity.class);
+                                        Intent i = new Intent(LedControl.this, MainActivity.class);
                                         Bundle b = new Bundle();
-                                        b.putString("KEYEXTRA",keyintent);
-                                        b.putString("NAME",nameintent);
-                                        b.putString("VEHICLENO",vehicleintent);
-                                        b.putString("PHONENO",phoneintent);
+                                        b.putString("KEYEXTRA", keyintent);
+                                        b.putString("NAME", nameintent);
+                                        b.putString("VEHICLENO", vehicleintent);
+                                        b.putString("PHONENO", phoneintent);
 
-                                        b.putString("ALERTINTENTEXTRA","yes");
+                                        b.putString("ALERTINTENTEXTRA", "yes");
 
                                         i.putExtras(b);
                                         startActivity(i);
@@ -270,9 +261,7 @@ public class LedControl extends AppCompatActivity {
                             });
 
                         }
-                    }
-                    catch (IOException ex)
-                    {
+                    } catch (IOException ex) {
                         stopThread = true;
                     }
                 }

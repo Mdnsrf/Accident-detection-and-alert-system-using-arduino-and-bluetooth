@@ -23,14 +23,15 @@ import java.util.List;
 public class retrivedatadb {
 
     Context context;
-    public retrivedatadb(Context context,MyCustomInterface otherNameInterface){
-        this.context=context;
+
+    public retrivedatadb(Context context, MyCustomInterface otherNameInterface) {
+        this.context = context;
         this.otherNameInterface = otherNameInterface;
     }
 
     private MyCustomInterface otherNameInterface;
 
-//for get alert
+    //for get alert
     public double[] arlatz;
     public double[] arlongiz;
     public String[] arstringz;
@@ -42,8 +43,6 @@ public class retrivedatadb {
     List<String> lstkeymz = new ArrayList<String>();
 
     //end for getalert
-
-
 
 
     public double[] arlat;
@@ -67,10 +66,8 @@ public class retrivedatadb {
     List<String> lstlongi = new ArrayList<String>();
     List<String> lstkeym = new ArrayList<String>();
 
-    List<String> lstphone=new ArrayList<String>();
-    List<String> lstvehicleno=new ArrayList<String>();
-
-
+    List<String> lstphone = new ArrayList<String>();
+    List<String> lstvehicleno = new ArrayList<String>();
 
 
     String returnstring = " ";
@@ -80,9 +77,9 @@ public class retrivedatadb {
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference cities = databaseRef.child("USERS");
-      // Query citiesQuery = cities.orderByKey();
-//        Query citiesQuery = cities.orderByChild("accident").equalTo("yes");
-       Query citiesQuery = cities.orderByChild("Name");
+
+       // Query citiesQuery = cities.orderByChild("Name"); THIS IS WORKING CODE
+          Query citiesQuery= cities.orderByChild("Isactive").equalTo("yes");
 
         citiesQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,24 +111,24 @@ public class retrivedatadb {
                 arkey = new String[lstkeym.size()];
                 distance = new double[lstlat.size()];
 
-                arphoneno=new String[lstphone.size()];
-                arvehicleno=new  String[lstphone.size()];
+                arphoneno = new String[lstphone.size()];
+                arvehicleno = new String[lstphone.size()];
 
                 for (int i = 0; i < lstlat.size(); ++i) {
                     arlat[i] = Double.parseDouble(lstlat.get(i));
                     arlongi[i] = Double.parseDouble(lstlongi.get(i));
                     arstring[i] = lstname.get(i);
-                    arkey[i]=lstkeym.get(i);
+                    arkey[i] = lstkeym.get(i);
 
-                    arphoneno[i]=lstphone.get(i);
-                    arvehicleno[i]=lstvehicleno.get(i);
+                    arphoneno[i] = lstphone.get(i);
+                    arvehicleno[i] = lstvehicleno.get(i);
 
 
                     distance[i] = distance(latitudecld, longitudecld, arlat[i], arlongi[i], 'K');
 
                 }
 
-                System.out.println("latitude :" + arlat.length + " long:" + arlongi.length + " string:" + arstring.length + " distance:" + distance.length+" key:"+arkey.length);
+                System.out.println("latitude :" + arlat.length + " long:" + arlongi.length + " string:" + arstring.length + " distance:" + distance.length + " key:" + arkey.length);
 
 
                 for (double di : distance) {
@@ -157,8 +154,7 @@ public class retrivedatadb {
 //
 //                }
 
-                otherNameInterface.sendData(arlat,arlongi,arstring,arkey,distance,arphoneno,arvehicleno);
-
+                otherNameInterface.sendData(arlat, arlongi, arstring, arkey, distance, arphoneno, arvehicleno);
 
 
             }//end on data changed
@@ -174,8 +170,6 @@ public class retrivedatadb {
 
         return returnstring;
     }//end retrieve data from db()
-
-
 
 
 //    void getlocationalertmethod (){
@@ -223,20 +217,6 @@ public class retrivedatadb {
 //
 //
 //    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public int FindSmallest(double[] arr1) {
@@ -306,12 +286,6 @@ public class retrivedatadb {
                 }   */
 
 //tv2.setText(String.valueOf(arstring[minimumindex]));
-
-
-
-
-
-
 
 
 //        databaseRef.orderByKey().get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

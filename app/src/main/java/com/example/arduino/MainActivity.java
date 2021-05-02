@@ -45,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
     public double latitude;
     public double longitude;
-
-    private GpsTracker gpsTracker;
-    private TextView tvLatitude, tvLongitude;
     public TextView tvnearestperson;
     public EditText personname;
     public TextView tv, tv2, tv3;
@@ -58,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
     public String keyintent;
     public TextView tvgeolocation;
     int indexofkeyelement;
+    private GpsTracker gpsTracker;
+    private TextView tvLatitude, tvLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +73,11 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
         // View view = new View(this);
 
-        tvgeolocation=(TextView)findViewById(R.id.tvGEOLOCATION);
+        tvgeolocation = (TextView) findViewById(R.id.tvGEOLOCATION);
         tvLatitude = (TextView) findViewById(R.id.tv_lat);
         tvLongitude = (TextView) findViewById(R.id.tv_long);
         tvnearestperson = (TextView) findViewById(R.id.tv_minperson);
-      //  personname = (EditText) findViewById(R.id.editTextTextPersonName);
-
-
-
-
-
-
-
+        //  personname = (EditText) findViewById(R.id.editTextTextPersonName);
 
 
         Bundle b = getIntent().getExtras();
@@ -112,14 +104,14 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
         // personname.setText(emailintent);
-       // tvnearestperson.setText("WELCOME " + nameintent);
+        // tvnearestperson.setText("WELCOME " + nameintent);
         tvnearestperson.setMovementMethod(new ScrollingMovementMethod());
 
 
         btn_1 = (Button) findViewById(R.id.btn_1);
         btn_2 = (Button) findViewById(R.id.btn_2);
         btn_3 = (Button) findViewById(R.id.btn_3);
-        Button btnterminal=(Button)findViewById(R.id.btn_terminal);
+        Button btnterminal = (Button) findViewById(R.id.btn_terminal);
         accidenttriggerbtn = (Button) findViewById(R.id.bTEMPACCIDENT);
 
         try {
@@ -129,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
 
         accidenttriggerbtn.setOnClickListener(new View.OnClickListener() {//BUTTON FOR ACCIDENT TRIGGER
@@ -188,10 +178,8 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                 getgeolocation();
                 Insert b = new Insert();
                 b.insert2database(keyintent, latitude, longitude, nameintent, "no", phoneintent, vehicleintent);//method of Insert class
-              //  handler.postDelayed(this, 1000L * 60 * 60);  // 1 second delay=1000L 20sec=20000L
+                //  handler.postDelayed(this, 1000L * 60 * 60);  // 1 second delay=1000L 20sec=20000L
                 handler.postDelayed(this, 20000L);  // 1 second delay=1000L 20sec=20000L
-
-
 
 
             }
@@ -199,11 +187,10 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
         handler.post(runnable);
 
 
-
         btnterminal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tts=new Intent(MainActivity.this,LedControl.class);
+                Intent tts = new Intent(MainActivity.this, LedControl.class);
                 startActivity(tts);
             }
         });
@@ -291,21 +278,39 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
 
                 System.out.println("alerted keys no============" + arkeyz.length);
-                if (arkeyz.length > 0) {
-                    System.out.println(arkeyz[0]);
-                    if (arkeyz[0].equals(keyintent) && !araccidentpersonkeyz[0].equals("no")) {
-                        Intent inten = new Intent(MainActivity.this, AlertActivity.class);
 
-                        Insert b2 = new Insert();
-                        // b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
-                        b2.insert2database(arkeyz[0], arlatz[0], arlongiz[0], arstringz[0], "no", arphonenoz[0], arvehiclenoplatez[0]);//method of Insert class
+                for (int i = 0; i < arkeyz.length; i++) {
 
-                        inten.putExtra("ACCPERSONKEY", araccidentpersonkeyz[0]);
-                        System.out.println("Main Act:" + araccidentpersonkeyz[0] + "====");
-                        startActivity(inten);
+                    if (arkeyz[i].equals(keyintent)) {
+                        System.out.println(arkeyz[0]);
+                        if (arkeyz[0].equals(keyintent) && !araccidentpersonkeyz[0].equals("no")) {
+                            Intent inten = new Intent(MainActivity.this, AlertActivity.class);
+
+                            Insert b2 = new Insert();
+                            // b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
+                            b2.insert2database(arkeyz[i], arlatz[i], arlongiz[i], arstringz[i], "no", arphonenoz[i], arvehiclenoplatez[i]);//method of Insert class
+
+                            inten.putExtra("ACCPERSONKEY", araccidentpersonkeyz[i]);
+                            System.out.println("Main Act:" + araccidentpersonkeyz[i] + "====");
+                            startActivity(inten);
+                        }
                     }
-
                 }
+//                if (arkeyz.length > 0) {
+//                    System.out.println(arkeyz[0]);
+//                    if (arkeyz[0].equals(keyintent) && !araccidentpersonkeyz[0].equals("no")) {
+//                        Intent inten = new Intent(MainActivity.this, AlertActivity.class);
+//
+//                        Insert b2 = new Insert();
+//                        // b2.insert2database(arkeyz[0],arlatz[0],arlongiz[0],arstringz[0],arkeyz[0],"no");//method of Insert class
+//                        b2.insert2database(arkeyz[0], arlatz[0], arlongiz[0], arstringz[0], "no", arphonenoz[0], arvehiclenoplatez[0]);//method of Insert class
+//
+//                        inten.putExtra("ACCPERSONKEY", araccidentpersonkeyz[0]);
+//                        System.out.println("Main Act:" + araccidentpersonkeyz[0] + "====");
+//                        startActivity(inten);
+//                    }
+//
+//                }
 
             }
 
@@ -391,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
             String npphoneno = phonef[minindex];
             String npvehicleno = vehiclenof[minindex];
 
-            System.out.println("Before UPDATE::"+npkey+" "+ nplat+" "+nplong+" "+npname+" "+npphoneno+" "+npvehicleno);
+            System.out.println("Before UPDATE::" + npkey + " " + nplat + " " + nplong + " " + npname + " " + npphoneno + " " + npvehicleno);
 
 
             Insert a = new Insert();
@@ -417,13 +422,13 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
 
     public int FindSmallest(double[] arr1, String[] arrstr) {
         int index = 0;
-        double min = arr1[index];
+        double min = 99999.9999;
 
         Bundle bd = getIntent().getExtras();
-       String keyka = bd.getString("KEYEXTRA");
+        String keyka = bd.getString("KEYEXTRA");
 
 
-        for (int i = 1; i < arr1.length; i++) {
+        for (int i = 0; i < arr1.length; i++) {
 
             if (arr1[i] <= min && !(arrstr[i].equals(keyka))) {
 
@@ -431,11 +436,12 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
                 index = i;
             }
 
+
         }
         return index;
     }
 
-    void getgeolocation(){
+    void getgeolocation() {
 
         try {
 
@@ -444,13 +450,12 @@ public class MainActivity extends AppCompatActivity implements MyCustomInterface
             List<Address> addresses = geo.getFromLocation(latitude, longitude, 1);
             if (addresses.isEmpty()) {
                 tvgeolocation.setText("Waiting for Location");
-            }
-            else {
-                tvgeolocation.setText(addresses.get(0).getPremises()+" ,"
-                        +addresses.get(0).getSubLocality()
-                        +" ,"+addresses.get(0).getLocality()
-                        +", " + addresses.get(0).getAdminArea()
-                        +" ,"+addresses.get(0).getPostalCode());
+            } else {
+                tvgeolocation.setText(addresses.get(0).getPremises() + " ,"
+                        + addresses.get(0).getSubLocality()
+                        + " ," + addresses.get(0).getLocality()
+                        + ", " + addresses.get(0).getAdminArea()
+                        + " ," + addresses.get(0).getPostalCode());
             }
         } catch (IOException e) {
             e.printStackTrace();

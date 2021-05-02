@@ -39,10 +39,10 @@ public class BluetoothActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth);
 
         Bundle b = getIntent().getExtras();
-         keyintent = b.getString("KEYEXTRA");
-         nameintent  = b.getString("NAME");
-         vehicleintent = b.getString("VEHICLENO");
-         phoneintent = b.getString("PHONENO");
+        keyintent = b.getString("KEYEXTRA");
+        nameintent = b.getString("NAME");
+        vehicleintent = b.getString("VEHICLENO");
+        phoneintent = b.getString("PHONENO");
 
 
         Button btnPaired;
@@ -54,7 +54,7 @@ public class BluetoothActivity extends AppCompatActivity {
         devicelist = (ListView) findViewById(R.id.listView);
 
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
-        if ( myBluetooth==null ) {
+        if (myBluetooth == null) {
             Toast.makeText(getApplicationContext(), "Bluetooth device not available", Toast.LENGTH_LONG).show();
             //finish();
 
@@ -70,10 +70,10 @@ public class BluetoothActivity extends AppCompatActivity {
                             Intent i = new Intent(BluetoothActivity.this, MainActivity.class);
 
                             Bundle b = new Bundle();
-                            b.putString("KEYEXTRA",keyintent);
-                            b.putString("NAME",nameintent);
-                            b.putString("VEHICLENO",vehicleintent);
-                            b.putString("PHONENO",phoneintent);
+                            b.putString("KEYEXTRA", keyintent);
+                            b.putString("NAME", nameintent);
+                            b.putString("VEHICLENO", vehicleintent);
+                            b.putString("PHONENO", phoneintent);
                             i.putExtras(b);
                             startActivity(i);
                         }
@@ -92,10 +92,7 @@ public class BluetoothActivity extends AppCompatActivity {
             alert11.show();
 
 
-
-
-        }
-        else if ( !myBluetooth.isEnabled() ) {
+        } else if (!myBluetooth.isEnabled()) {
             Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnBTon, 1);
         }
@@ -123,10 +120,10 @@ public class BluetoothActivity extends AppCompatActivity {
                                 Intent i = new Intent(BluetoothActivity.this, MainActivity.class);
 
                                 Bundle b = new Bundle();
-                                b.putString("KEYEXTRA",keyintent);
-                                b.putString("NAME",nameintent);
-                                b.putString("VEHICLENO",vehicleintent);
-                                b.putString("PHONENO",phoneintent);
+                                b.putString("KEYEXTRA", keyintent);
+                                b.putString("NAME", nameintent);
+                                b.putString("VEHICLENO", vehicleintent);
+                                b.putString("PHONENO", phoneintent);
                                 i.putExtras(b);
                                 startActivity(i);
                             }
@@ -144,18 +141,17 @@ public class BluetoothActivity extends AppCompatActivity {
                 alert11.show();
 
 
-
             }
         });
 
     }
 
-    private void pairedDevicesList () {
+    private void pairedDevicesList() {
         pairedDevices = myBluetooth.getBondedDevices();
         ArrayList list = new ArrayList();
 
-        if ( pairedDevices.size() > 0 ) {
-            for ( BluetoothDevice bt : pairedDevices ) {
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice bt : pairedDevices) {
                 list.add(bt.getName().toString() + "\n" + bt.getAddress().toString());
             }
         } else {
@@ -171,19 +167,17 @@ public class BluetoothActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String info = ((TextView) view).getText().toString();
-            String address = info.substring(info.length()-17);
+            String address = info.substring(info.length() - 17);
 
             Intent i = new Intent(BluetoothActivity.this, LedControl.class);
             i.putExtra(EXTRA_ADDRESS, address);
             Bundle b = new Bundle();
-            b.putString("KEYEXTRA",keyintent);
-            b.putString("NAME",nameintent);
-            b.putString("VEHICLENO",vehicleintent);
-            b.putString("PHONENO",phoneintent);
+            b.putString("KEYEXTRA", keyintent);
+            b.putString("NAME", nameintent);
+            b.putString("VEHICLENO", vehicleintent);
+            b.putString("PHONENO", phoneintent);
             i.putExtras(b);
             startActivity(i);
-
-
 
 
         }
